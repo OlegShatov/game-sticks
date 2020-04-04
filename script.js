@@ -208,15 +208,15 @@ st20.addEventListener("click", function(event) {
 
 /* обработчик события на кнопке Ок */
 ok.addEventListener("click", function(event) {
-  ok.style.visibility = 'hidden'; // кнопка становится невидимой
   
   let delSticks = document.querySelectorAll('.active'); // определение выбранных палочек
   for (let stick of delSticks) {
     stick.classList.add('shifted'); // выбранные палочки удаляются из игры
   };
-  //n = 0; // обнуляем счётчик
-  setTimeout(computerStep, 1000); // спустя секунду оппонент делает ход
-  
+  if (n > 0) {
+    ok.style.visibility = 'hidden'; // кнопка становится невидимой
+    setTimeout(computerStep, 1000); // спустя секунду оппонент делает ход
+  } else alert("Пожалуйста, выберите 1, 2 или 3 палочки")
 });
  
 /* функция вычисления хода оппонента */
@@ -256,6 +256,11 @@ ok.addEventListener("click", function(event) {
             gameover = true;
             break
           };
+          case 0: {
+            alert("Вы проиграли");
+            gameover = true;
+            break
+          };
           default: n = randomInteger(1, 3); // генерируем, сколько палочек возьмёт оппонент
         };
         if (sticks.length > 1) { // оппонент совершит ход, только если палочек >1
@@ -269,7 +274,7 @@ ok.addEventListener("click", function(event) {
           }
         }; 
         n = 0;
-        if (gameover === false) {
+        if (gameover === false) { // если игра не окончена, кнопка становится видимой
           ok.style.visibility = 'visible';
         }
       });
