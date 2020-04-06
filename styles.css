@@ -8,7 +8,7 @@ body {
 }
 #wrapper {
 	width: 500px;
-	height: 250px;
+	height: 280px;
 	background-color: #FFF8DC;
 	border: 1px solid black;
 	border-radius: 20px;
@@ -30,7 +30,7 @@ body {
 .shirma {
 	position: relative;
 	width: 90%;
-	height: 100px;
+	height: 130px;
 	margin: 0px auto auto auto;
 	background-color: #FFF8DC;
 	z-index: 2;
@@ -72,7 +72,7 @@ body {
 	border-radius: 5px;
 	margin: 10px auto auto auto;
 	text-align: center;
-	z-index: 2;
+	z-index: 3;
 	cursor: default;
 }
 #ok:hover {
@@ -88,7 +88,7 @@ body {
 	text-align: center;
 	z-index: 2;
 	right: 0px;
-	top: 75px;
+	top: 100px;
 	cursor: default;
 }
 #start_again:hover {
