@@ -208,23 +208,61 @@ st20.addEventListener("click", function(event) {
 
 /* обработчик события на кнопке Ок */
 ok.addEventListener("click", function(event) {
-  ok.style.visibility = 'hidden'; // кнопка становится невидимой
-  
+  let level;
+  let radio = document.getElementsByName("level"); // проверка уровня
+    for (let i = 0; i < radio.length; i++) {
+      radio[i].disabled = true;
+      if (radio[i].checked == 1) {
+        level = radio[i].value;
+      }
+    }
   let delSticks = document.querySelectorAll('.active'); // определение выбранных палочек
   for (let stick of delSticks) {
     stick.classList.add('shifted'); // выбранные палочки удаляются из игры
   };
-  //n = 0; // обнуляем счётчик
-  setTimeout(computerStep, 1000); // спустя секунду оппонент делает ход
-  
+  if (n > 0) {
+    ok.style.visibility = 'hidden'; // кнопка становится невидимой
+    setTimeout(computerStep, 1000); // спустя секунду оппонент делает ход
+  } else alert("Пожалуйста, выберите 1, 2 или 3 палочки")
 });
  
 /* функция вычисления хода оппонента */
-  function computerStep() {
-    
-      jQuery(document).ready(function($){ 
-        let sticks = $('div[class$=stick]'); // вычисляем, сколько палочек осталось
-      
+  function computerStep(level) {
+    jQuery(document).ready(function($){ 
+      let sticks = $('div[class$=stick]'); // вычисляем, сколько палочек осталось
+      if (level == "easy") {
+        switch (sticks.length) { // выбор количества палочек оппонента
+          case 4: {
+            n = 3; 
+            setTimeout(() => alert("Вы проиграли"), 1000); 
+            gameover = true;
+            break
+          };
+          case 3: {
+            n = 2; 
+            setTimeout(() => alert("Вы проиграли"), 1000);
+            gameover = true;
+            break
+          };
+          case 2: {
+            n = 1; 
+            setTimeout(() => alert("Вы проиграли"), 1000);
+            gameover = true;
+          break
+          };
+          case 1: {
+            alert("Поздравляем! Вы выиграли");
+            gameover = true;
+            break
+          };
+          case 0: {
+            alert("Вы проиграли");
+            gameover = true;
+            break
+          };
+          default: n = randomInteger(1, 3); // генерируем, сколько палочек возьмёт оппонент
+        }
+      } else {
         switch (sticks.length) { // выбор количества палочек оппонента
           case 18: n = 1; break;
           case 16: n = 3; break;
@@ -256,24 +294,28 @@ ok.addEventListener("click", function(event) {
             gameover = true;
             break
           };
+          case 0: {
+            alert("Вы проиграли");
+            gameover = true;
+            break
+          };
           default: n = randomInteger(1, 3); // генерируем, сколько палочек возьмёт оппонент
         };
-        if (sticks.length > 1) { // оппонент совершит ход, только если палочек >1
-          for (let i = 0; i < n; i++) { 
-            jQuery(document).ready(function($){ // определяем какие именно палочки в доступности, чтобы 
-              let sticks = $('div[class$=stick]'); // не было совпадений 2 шага на одну и ту же палочку
-              stickNumber = randomInteger(0, (sticks.length - 1)); // генерируем, какую именно палочку оппонент выберет
-              sticks[stickNumber].classList.add('active');
-              sticks[stickNumber].classList.add('shifted');
-            });
-          }
+      }
+      if (sticks.length > 1) {
+        for (let i = 0; i < n; i++) { 
+          let sticks = $('div[class$=stick]'); // не было совпадений 2 шага на одну и ту же палочку
+          stickNumber = randomInteger(0, (sticks.length - 1)); // генерируем, какую именно палочку оппонент выберет
+          sticks[stickNumber].classList.add('active');
+          sticks[stickNumber].classList.add('shifted')
         }; 
+      }
         n = 0;
-        if (gameover === false) {
+        if (gameover === false) { // если игра не окончена, кнопка становится видимой
           ok.style.visibility = 'visible';
         }
       });
-    
+  
   };
 
   /* функция-генератор случайных чисел */
@@ -295,4 +337,8 @@ start_again.addEventListener("click", function(event) {
   n = 0;
   gameover = false;
   ok.style.visibility = 'visible';
+  let radio = document.getElementsByName("level"); // все radiobutton приводим к состоянию enabled
+  for (let i = 0; i < radio.length; i++) {
+    radio[i].disabled = false;
+  }
 });
